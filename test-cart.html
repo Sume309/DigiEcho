@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cart Functionality</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Cart Functionality Test</h2>
+        
+        <!-- Professional Cart & Wishlist Icons -->
+        <div class="mb-4">
+            <h4>Professional E-commerce Icons:</h4>
+            <div class="d-flex gap-3 align-items-center">
+                <!-- Shopping Cart -->
+                <button type="button" class="btn position-relative" style="background: none; border: none; padding: 8px;" title="Shopping Cart">
+                    <i class="fas fa-shopping-cart" style="font-size: 24px; color: #007bff;"></i>
+                    <span id="cartCountButton" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px; min-width: 18px; height: 18px;">0</span>
+                </button>
+                
+                <!-- Wishlist -->
+                <button type="button" class="btn position-relative" style="background: none; border: none; padding: 8px;" title="Wishlist">
+                    <i class="fas fa-heart" style="font-size: 22px; color: #dc3545;"></i>
+                    <span id="wishlistCountButton" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" style="font-size: 10px; min-width: 18px; height: 18px;">0</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Test Products -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Test Product 1</h5>
+                        <p class="card-text">৳150.00</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary btn-add-cart" 
+                                    data-product-id="1"
+                                    data-product-name="Test Product 1"
+                                    data-product-price="150.00"
+                                    data-product-image="test1.jpg">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-outline-danger btn-add-wishlist" 
+                                    data-product-id="1"
+                                    data-product-name="Test Product 1"
+                                    data-product-price="150.00"
+                                    data-product-image="test1.jpg">
+                                <i class="far fa-heart"></i> Wishlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Test Product 2</h5>
+                        <p class="card-text">৳200.00</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary btn-add-cart" 
+                                    data-product-id="2"
+                                    data-product-name="Test Product 2"
+                                    data-product-price="200.00"
+                                    data-product-image="test2.jpg">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-outline-danger btn-add-wishlist" 
+                                    data-product-id="2"
+                                    data-product-name="Test Product 2"
+                                    data-product-price="200.00"
+                                    data-product-image="test2.jpg">
+                                <i class="far fa-heart"></i> Wishlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Test Product 3</h5>
+                        <p class="card-text">৳300.00</p>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary btn-add-cart" 
+                                    data-product-id="3"
+                                    data-product-name="Test Product 3"
+                                    data-product-price="300.00"
+                                    data-product-image="test3.jpg">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-outline-danger btn-add-wishlist" 
+                                    data-product-id="3"
+                                    data-product-name="Test Product 3"
+                                    data-product-price="300.00"
+                                    data-product-image="test3.jpg">
+                                <i class="far fa-heart"></i> Wishlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cart & Wishlist Summary -->
+        <div class="mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Cart Summary:</h4>
+                    <p>Total Items: <span id="totalItems">0</span></p>
+                    <p>Total Price: <span id="totalPrice">৳0.00</span></p>
+                    <button class="btn btn-danger" onclick="clearCart()">Clear Cart</button>
+                </div>
+                <div class="col-md-6">
+                    <h4>Wishlist Summary:</h4>
+                    <p>Total Items: <span id="totalWishlistItems">0</span></p>
+                    <button class="btn btn-outline-danger" onclick="clearWishlist()">Clear Wishlist</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart.js and Wishlist.js from your project -->
+    <script src="assets/js/cart.js"></script>
+    <script src="assets/js/wishlist.js"></script>
+    
+    <script>
+        // Additional cart and wishlist summary update functions
+        function updateCartSummary() {
+            const summary = cart.getSummary();
+            document.getElementById('totalItems').textContent = summary.totalItems;
+            document.getElementById('totalPrice').textContent = '৳' + summary.totalPrice;
+        }
+        
+        function updateWishlistSummary() {
+            const summary = wishlist.getSummary();
+            document.getElementById('totalWishlistItems').textContent = summary.totalItems;
+        }
+        
+        function clearCart() {
+            cart.clearCart();
+            updateCartDisplay();
+            updateCartSummary();
+        }
+        
+        function clearWishlist() {
+            wishlist.clearWishlist();
+            updateWishlistDisplay();
+            updateWishlistSummary();
+        }
+        
+        // Override updateCartDisplay to also update our summary
+        const originalUpdateCartDisplay = window.updateCartDisplay;
+        window.updateCartDisplay = function() {
+            originalUpdateCartDisplay();
+            updateCartSummary();
+        };
+        
+        // Override updateWishlistDisplay to also update our summary
+        const originalUpdateWishlistDisplay = window.updateWishlistDisplay;
+        window.updateWishlistDisplay = function() {
+            originalUpdateWishlistDisplay();
+            updateWishlistSummary();
+        };
+        
+        // Initial load
+        $(document).ready(function() {
+            updateCartSummary();
+            updateWishlistSummary();
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

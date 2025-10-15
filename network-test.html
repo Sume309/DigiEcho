@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Errors Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Network Errors Test - Fixed Images</h1>
+    
+    <div class="test-section">
+        <h3>1. Payment Methods Image Test</h3>
+        <p class="info">Testing local SVG replacement for payment methods...</p>
+        <img src="assets/images/payment-methods.svg" alt="Payment Methods" style="max-width: 120px; border: 1px solid #ccc;">
+        <p id="payment-status" class="info">Loading...</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. App Store Images Test</h3>
+        <p class="info">Testing local SVG replacements for app store badges...</p>
+        <div style="display: flex; gap: 10px;">
+            <img src="assets/images/app-store.svg" alt="App Store" style="max-width: 120px; border: 1px solid #ccc;">
+            <img src="assets/images/google-play.svg" alt="Google Play" style="max-width: 120px; border: 1px solid #ccc;">
+        </div>
+        <p id="appstore-status" class="info">Loading...</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>3. Product Placeholder Test</h3>
+        <p class="info">Testing product placeholder image...</p>
+        <img src="assets/images/product-placeholder.svg" alt="Product Placeholder" style="max-width: 150px; border: 1px solid #ccc;">
+        <p id="product-status" class="info">Loading...</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Network Error Check</h3>
+        <p class="info">Checking for any remaining external placeholder requests...</p>
+        <p id="network-status" class="info">Monitoring network requests...</p>
+    </div>
+
+    <script>
+        // Monitor image loading
+        function checkImageLoad(imgSrc, statusElementId, imageName) {
+            const img = new Image();
+            const statusElement = document.getElementById(statusElementId);
+            
+            img.onload = function() {
+                statusElement.innerHTML = `<span class="success">✓ ${imageName} loaded successfully!</span>`;
+            };
+            
+            img.onerror = function() {
+                statusElement.innerHTML = `<span class="error">✗ ${imageName} failed to load!</span>`;
+            };
+            
+            img.src = imgSrc;
+        }
+        
+        // Test all images
+        checkImageLoad('assets/images/payment-methods.svg', 'payment-status', 'Payment Methods');
+        checkImageLoad('assets/images/app-store.svg', 'appstore-status', 'App Store Images');
+        checkImageLoad('assets/images/product-placeholder.svg', 'product-status', 'Product Placeholder');
+        
+        // Check for network errors
+        let networkErrors = [];
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            return originalFetch.apply(this, args).catch(error => {
+                networkErrors.push(args[0]);
+                throw error;
+            });
+        };
+        
+        // Monitor for XMLHttpRequest errors
+        const originalXHR = window.XMLHttpRequest;
+        window.XMLHttpRequest = function() {
+            const xhr = new originalXHR();
+            const originalOpen = xhr.open;
+            xhr.open = function(method, url) {
+                if (url.includes('via.placeholder.com') || url.includes('placeholder')) {
+                    networkErrors.push(url);
+                }
+                return originalOpen.apply(this, arguments);
+            };
+            return xhr;
+        };
+        
+        // Check results after a delay
+        setTimeout(() => {
+            const networkStatus = document.getElementById('network-status');
+            if (networkErrors.length === 0) {
+                networkStatus.innerHTML = '<span class="success">✓ No external placeholder requests detected!</span>';
+            } else {
+                networkStatus.innerHTML = `<span class="error">✗ Found ${networkErrors.length} external requests: ${networkErrors.join(', ')}</span>`;
+            }
+        }, 2000);
+        
+        console.log('Network error test initialized. Check console for any errors.');
+    </script>
+</body>
+</html>

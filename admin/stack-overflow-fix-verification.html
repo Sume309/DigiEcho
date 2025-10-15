@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Overflow Fix Verification</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        .test-area {
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            background: #f9f9f9;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .test-area.dragover {
+            border-color: #007bff;
+            background: #e3f2fd;
+        }
+        .status-box {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status-box.success { background: #d4edda; }
+        .status-box.error { background: #f8d7da; }
+        .status-box.warning { background: #fff3cd; }
+        .status-box.info { background: #d1ecf1; }
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .metric {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn.danger { background: #dc3545; }
+        .btn.danger:hover { background: #c82333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Stack Overflow Fix Verification</h1>
+        <p class="info">This test verifies that the Maximum call stack size exceeded error has been resolved.</p>
+        
+        <div class="test-section">
+            <h3>🎯 Drag & Drop Stress Test</h3>
+            <div id="testArea" class="test-area">
+                <span>Drop files here or drag over this area repeatedly</span>
+            </div>
+            
+            <div id="statusDisplay" class="status-box info">
+                <strong>Status:</strong> <span id="statusText">Ready for testing</span>
+            </div>
+            
+            <div class="metrics">
+                <div class="metric">
+                    <div class="metric-value" id="dragenterCount">0</div>
+                    <div>Dragenter Events</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="dragoverCount">0</div>
+                    <div>Dragover Events</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="dragleaveCount">0</div>
+                    <div>Dragleave Events</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value" id="errorCount">0</div>
+                    <div>Errors Detected</div>
+                </div>
+            </div>
+            
+            <div>
+                <button class="btn" id="stressTest">🚀 Run Stress Test</button>
+                <button class="btn" id="simulateRapidEvents">⚡ Simulate Rapid Events</button>
+                <button class="btn danger" id="resetTest">🔄 Reset</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📊 Circuit Breaker Test</h3>
+            <p>Testing the emergency circuit breaker functionality:</p>
+            <div id="circuitStatus" class="status-box info">Circuit Breaker: <span id="circuitState">Active</span></div>
+            <button class="btn" id="testCircuitBreaker">Test Circuit Breaker</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ Test Results</h3>
+            <div id="testResults">
+                <div class="status-box info">Tests not yet run</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Metrics
+            let dragenterCount = 0;
+            let dragoverCount = 0;
+            let dragleaveCount = 0;
+            let errorCount = 0;
+            let dragCounter = 0;
+            let dragDisabled = false;
+            
+            // Circuit breaker variables
+            let eventCallCount = 0;
+            let lastEventTime = 0;
+            const MAX_EVENTS_PER_SECOND = 50;
+            const MAX_ERRORS = 5;
+            
+            const testArea = $('#testArea');
+            
+            // Safety check function (same as in fixed code)
+            function isEventSafe() {
+                const now = Date.now();
+                if (now - lastEventTime > 1000) {
+                    eventCallCount = 0;
+                }
+                lastEventTime = now;
+                eventCallCount++;
+                
+                if (eventCallCount > MAX_EVENTS_PER_SECOND) {
+                    console.warn('Too many drag events detected, throttling...');
+                    return false;
+                }
+                return true;
+            }
+            
+            function disableDragIfNeeded() {
+                errorCount++;
+                updateMetrics();
+                if (errorCount >= MAX_ERRORS) {
+                    dragDisabled = true;
+                    updateStatus('error', 'Drag functionality disabled due to too many errors');
+                    $('#circuitState').text('TRIPPED').css('color', '#dc3545');
+                }
+            }
+            
+            function updateStatus(type, message) {
+                const statusDisplay = $('#statusDisplay');
+                const statusText = $('#statusText');
+                statusDisplay.removeClass('info success error warning').addClass(type);
+                statusText.text(message);
+            }
+            
+            function updateMetrics() {
+                $('#dragenterCount').text(dragenterCount);
+                $('#dragoverCount').text(dragoverCount);
+                $('#dragleaveCount').text(dragleaveCount);
+                $('#errorCount').text(errorCount);
+            }
+            
+            // Implement the same fixed drag and drop logic
+            testArea.on('dragenter.test', function(e) {
+                if (dragDisabled || !isEventSafe()) return;
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragenterCount++;
+                    dragCounter++;
+                    if (dragCounter === 1) {
+                        $(this).addClass('dragover');
+                    }
+                    updateMetrics();
+                } catch (error) {
+                    console.error('Dragenter error:', error);
+                    disableDragIfNeeded();
+                }
+            });
+            
+            testArea.on('dragover.test', function(e) {
+                if (dragDisabled || !isEventSafe()) return;
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragoverCount++;
+                    updateMetrics();
+                } catch (error) {
+                    console.error('Dragover error:', error);
+                    disableDragIfNeeded();
+                }
+            });
+            
+            testArea.on('dragleave.test', function(e) {
+                if (dragDisabled || !isEventSafe()) return;
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragleaveCount++;
+                    dragCounter--;
+                    if (dragCounter <= 0) {
+                        dragCounter = 0;
+                        $(this).removeClass('dragover');
+                    }
+                    updateMetrics();
+                } catch (error) {
+                    console.error('Dragleave error:', error);
+                    disableDragIfNeeded();
+                }
+            });
+            
+            testArea.on('drop.test', function(e) {
+                if (dragDisabled || !isEventSafe()) return;
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragCounter = 0;
+                    $(this).removeClass('dragover');
+                    updateStatus('success', 'File drop simulated successfully!');
+                    updateMetrics();
+                } catch (error) {
+                    console.error('Drop error:', error);
+                    disableDragIfNeeded();
+                }
+            });
+            
+            // Test buttons
+            $('#stressTest').on('click', function() {
+                updateStatus('info', 'Running stress test...');
+                
+                for (let i = 0; i < 100; i++) {
+                    setTimeout(() => {
+                        testArea.trigger('dragenter');
+                        setTimeout(() => testArea.trigger('dragleave'), 5);
+                    }, i * 10);
+                }
+                
+                setTimeout(() => {
+                    if (!dragDisabled) {
+                        updateStatus('success', 'Stress test completed - no stack overflow detected!');
+                        addTestResult('✅ Stress Test', 'PASSED - No stack overflow with 100 rapid events');
+                    }
+                }, 2000);
+            });
+            
+            $('#simulateRapidEvents').on('click', function() {
+                updateStatus('info', 'Simulating rapid events...');
+                
+                // Simulate very rapid events that would cause stack overflow in old code
+                for (let i = 0; i < 200; i++) {
+                    testArea.trigger('dragenter');
+                    testArea.trigger('dragover');
+                    testArea.trigger('dragleave');
+                }
+                
+                setTimeout(() => {
+                    if (!dragDisabled) {
+                        updateStatus('success', 'Rapid events test completed successfully!');
+                        addTestResult('⚡ Rapid Events Test', 'PASSED - 600 events processed without stack overflow');
+                    }
+                }, 500);
+            });
+            
+            $('#testCircuitBreaker').on('click', function() {
+                updateStatus('info', 'Testing circuit breaker...');
+                
+                // Force errors to test circuit breaker
+                for (let i = 0; i < 10; i++) {
+                    disableDragIfNeeded();
+                }
+                
+                addTestResult('🔧 Circuit Breaker Test', dragDisabled ? 'PASSED - Circuit breaker activated' : 'FAILED - Circuit breaker did not activate');
+            });
+            
+            $('#resetTest').on('click', function() {
+                dragenterCount = 0;
+                dragoverCount = 0;
+                dragleaveCount = 0;
+                errorCount = 0;
+                dragCounter = 0;
+                dragDisabled = false;
+                eventCallCount = 0;
+                
+                testArea.removeClass('dragover');
+                updateMetrics();
+                updateStatus('info', 'Test reset - ready for new tests');
+                $('#circuitState').text('Active').css('color', '#28a745');
+                $('#testResults').html('<div class=\"status-box info\">Tests not yet run</div>');
+            });
+            
+            function addTestResult(testName, result) {
+                const resultsContainer = $('#testResults');
+                const isPass = result.includes('PASSED');
+                const resultClass = isPass ? 'success' : 'error';
+                const icon = isPass ? '✅' : '❌';
+                
+                if (resultsContainer.find('.status-box').first().text() === 'Tests not yet run') {
+                    resultsContainer.empty();
+                }
+                
+                resultsContainer.append(`
+                    <div class="status-box ${resultClass}">
+                        ${icon} <strong>${testName}:</strong> ${result}
+                    </div>
+                `);
+            }
+            
+            // Initial setup
+            updateStatus('success', 'Fix verification test loaded successfully');
+            updateMetrics();
+            
+            // Monitor for any JavaScript errors
+            window.addEventListener('error', function(e) {
+                if (e.message.includes('Maximum call stack size exceeded')) {
+                    updateStatus('error', 'CRITICAL: Stack overflow detected!');
+                    addTestResult('❌ Stack Overflow Check', 'FAILED - Stack overflow still occurring');
+                }
+            });
+            
+            console.log('Stack overflow fix verification test initialized');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Error Test</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <h1>JavaScript Error Test</h1>
+    <p>This page tests for common JavaScript errors.</p>
+    
+    <script>
+        // Test 1: Null element access
+        console.log("Test 1: Null element access");
+        try {
+            const nullElement = document.getElementById('nonExistentElement');
+            if (nullElement && nullElement.classList) {
+                nullElement.classList.add('test');
+            } else {
+                console.log("✓ Properly handled null element");
+            }
+        } catch (error) {
+            console.error("✗ Null element error:", error);
+        }
+        
+        // Test 2: Safe DOM manipulation
+        console.log("Test 2: Safe DOM manipulation");
+        document.addEventListener('DOMContentLoaded', function() {
+            const testElement = document.getElementById('testElement');
+            if (testElement && testElement.classList) {
+                testElement.classList.add('loaded');
+                console.log("✓ Safe DOM manipulation completed");
+            } else {
+                console.log("✓ Element doesn't exist, but no error thrown");
+            }
+        });
+        
+        // Test 3: jQuery check
+        console.log("Test 3: jQuery availability");
+        if (typeof $ !== 'undefined') {
+            console.log("✓ jQuery is available");
+        } else {
+            console.log("✗ jQuery is not available");
+        }
+        
+        console.log("All tests completed - check console for results");
+    </script>
+    
+    <div id="testElement">Test Element</div>
+</body>
+</html>

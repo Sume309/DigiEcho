@@ -1,0 +1,41 @@
+[17-Jul-2025 17:48:27 Europe/Berlin] PHP Warning:  require(D:\xampp8212\htdocs\Family-Haat-Bazar/vendor/autoload.php): Failed to open stream: No such file or directory in D:\xampp8212\htdocs\Family-Haat-Bazar\index.php on line 5
+[17-Jul-2025 17:48:27 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'D:\xampp8212\htdocs\Family-Haat-Bazar/vendor/autoload.php' (include_path='D:\xampp8212\php\PEAR') in D:\xampp8212\htdocs\Family-Haat-Bazar\index.php:5
+Stack trace:
+#0 {main}
+  thrown in D:\xampp8212\htdocs\Family-Haat-Bazar\index.php on line 5
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 12:26:54 Asia/Dhaka] PHP Warning:  Undefined array key "" in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 79
+[24-Aug-2025 08:36:02 Europe/Berlin] PHP Parse error:  syntax error, unexpected end of file in F:\xampp\htdocs\project\Family-Haat-Bazar\index.php on line 262

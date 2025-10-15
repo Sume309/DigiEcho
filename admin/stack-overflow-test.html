@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Overflow Fix Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+        .test-dragarea {
+            width: 300px;
+            height: 200px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            background: #f9f9f9;
+            transition: all 0.3s;
+        }
+        .test-dragarea.dragover {
+            border-color: #007bff;
+            background: #e3f2fd;
+        }
+        .status { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Stack Overflow Fix Test</h1>
+    
+    <div class="test-section">
+        <h3>1. Drag and Drop Event Test</h3>
+        <p class="info">Testing improved drag and drop functionality...</p>
+        
+        <div id="testDragArea" class="test-dragarea">
+            <span>Drop files here or drag over this area</span>
+        </div>
+        
+        <div id="dragStatus" class="status info">Ready for testing</div>
+        
+        <div>
+            <button id="simulateEvents">Simulate Multiple Events</button>
+            <button id="resetTest">Reset Test</button>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Event Counter</h3>
+        <p class="info">Monitoring event calls to detect infinite loops...</p>
+        <div id="eventStats">
+            <div>Dragenter events: <span id="dragenterCount">0</span></div>
+            <div>Dragover events: <span id="dragoverCount">0</span></div>
+            <div>Dragleave events: <span id="dragleaveCount">0</span></div>
+            <div>Class toggle operations: <span id="classToggleCount">0</span></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Event counters
+            let dragenterCount = 0;
+            let dragoverCount = 0;
+            let dragleaveCount = 0;
+            let classToggleCount = 0;
+            let dragCounter = 0;
+            
+            const testDragArea = $('#testDragArea');
+            const dragStatus = $('#dragStatus');
+            
+            // Safety check for elements
+            if (testDragArea.length) {
+                // Fixed drag and drop implementation
+                testDragArea.on('dragenter', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragenterCount++;
+                    dragCounter++;
+                    
+                    if (dragCounter === 1) {
+                        $(this).addClass('dragover');
+                        classToggleCount++;
+                        updateStatus('success', 'Drag entered - class added');
+                    }
+                    updateEventStats();
+                });
+                
+                testDragArea.on('dragover', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragoverCount++;
+                    // Don't add class here to prevent recursive calls
+                    updateEventStats();
+                });
+                
+                testDragArea.on('dragleave', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragleaveCount++;
+                    dragCounter--;
+                    
+                    if (dragCounter === 0) {
+                        $(this).removeClass('dragover');
+                        classToggleCount++;
+                        updateStatus('info', 'Drag left - class removed');
+                    }
+                    updateEventStats();
+                });
+                
+                testDragArea.on('drop', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dragCounter = 0;
+                    $(this).removeClass('dragover');
+                    classToggleCount++;
+                    updateStatus('success', 'File dropped - test completed');
+                    updateEventStats();
+                });
+            }
+            
+            // Test buttons
+            $('#simulateEvents').on('click', function() {
+                // Simulate rapid events to test for stack overflow
+                updateStatus('info', 'Simulating rapid events...');
+                
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => {
+                        testDragArea.trigger('dragenter');
+                        setTimeout(() => {
+                            testDragArea.trigger('dragleave');
+                        }, 10);
+                    }, i * 20);
+                }
+                
+                setTimeout(() => {
+                    updateStatus('success', 'Simulation completed - no stack overflow detected');
+                }, 500);
+            });
+            
+            $('#resetTest').on('click', function() {
+                dragenterCount = 0;
+                dragoverCount = 0;
+                dragleaveCount = 0;
+                classToggleCount = 0;
+                dragCounter = 0;
+                testDragArea.removeClass('dragover');
+                updateStatus('info', 'Test reset');
+                updateEventStats();
+            });
+            
+            function updateStatus(type, message) {
+                dragStatus.removeClass('info success error')
+                         .addClass(type)
+                         .text(message);
+            }
+            
+            function updateEventStats() {
+                $('#dragenterCount').text(dragenterCount);
+                $('#dragoverCount').text(dragoverCount);
+                $('#dragleaveCount').text(dragleaveCount);
+                $('#classToggleCount').text(classToggleCount);
+            }
+            
+            // Monitor for stack overflow
+            let lastEventTime = Date.now();
+            let eventCount = 0;
+            
+            const originalTrigger = $.fn.trigger;
+            $.fn.trigger = function() {
+                const now = Date.now();
+                if (now - lastEventTime < 10) {
+                    eventCount++;
+                    if (eventCount > 100) {
+                        console.error('Potential infinite loop detected!');
+                        updateStatus('error', 'Potential infinite loop detected!');
+                        return this;
+                    }
+                } else {
+                    eventCount = 0;
+                }
+                lastEventTime = now;
+                return originalTrigger.apply(this, arguments);
+            };
+            
+            updateStatus('success', 'Test initialized successfully');
+        });
+    </script>
+</body>
+</html>

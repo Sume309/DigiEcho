@@ -1,0 +1,17 @@
+# Allow access to invoice files (development). Adjust as needed for production.
+
+# Apache 2.4+
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
+
+# Backward compatibility with Apache 2.2
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Allow from all
+</IfModule>
+
+# You may optionally restrict by IP during development:
+# <RequireAll>
+#     Require ip 127.0.0.1 ::1
+# </RequireAll>

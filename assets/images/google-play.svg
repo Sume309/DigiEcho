@@ -1,0 +1,7 @@
+<!-- SVG Placeholder for Google Play Store -->
+<svg width="120" height="40" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="40" fill="#01875f" rx="6"/>
+  <text x="60" y="14" font-family="Arial, sans-serif" font-size="8" text-anchor="middle" fill="white">Get it on</text>
+  <text x="60" y="28" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Google Play</text>
+  <text x="15" y="25" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="white">▶</text>
+</svg>

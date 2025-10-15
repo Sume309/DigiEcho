@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts.js Path Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Scripts.js Path Fix Test</h1>
+    
+    <div class="test-section">
+        <h3>1. File Path Test</h3>
+        <p class="info">Testing if assets/js/scripts.js is accessible...</p>
+        <p id="path-status" class="info">Testing...</p>
+    </div>
+    
+    <div class="test-section">
+        <h3>2. Network Error Test</h3>
+        <p class="info">Checking for 404 errors...</p>
+        <p id="network-status" class="info">Monitoring...</p>
+    </div>
+
+    <script>
+        // Test script loading
+        function testScriptPath() {
+            const script = document.createElement('script');
+            const pathStatus = document.getElementById('path-status');
+            
+            script.onload = function() {
+                pathStatus.innerHTML = '<span class="success">✓ assets/js/scripts.js loaded successfully!</span>';
+            };
+            
+            script.onerror = function() {
+                pathStatus.innerHTML = '<span class="error">✗ Failed to load assets/js/scripts.js!</span>';
+            };
+            
+            script.src = 'assets/js/scripts.js';
+            document.head.appendChild(script);
+        }
+        
+        // Monitor network errors
+        let networkErrors = [];
+        const originalXHR = window.XMLHttpRequest;
+        window.XMLHttpRequest = function() {
+            const xhr = new originalXHR();
+            const originalOpen = xhr.open;
+            xhr.open = function(method, url) {
+                if (url.includes('js/scripts.js') && !url.includes('assets/js/scripts.js')) {
+                    networkErrors.push(url);
+                }
+                return originalOpen.apply(this, arguments);
+            };
+            return xhr;
+        };
+        
+        // Check for script tags with incorrect paths
+        setTimeout(() => {
+            const networkStatus = document.getElementById('network-status');
+            const incorrectScripts = document.querySelectorAll('script[src*="js/scripts.js"]:not([src*="assets/js/scripts.js"])');
+            
+            if (incorrectScripts.length === 0 && networkErrors.length === 0) {
+                networkStatus.innerHTML = '<span class="success">✓ No incorrect script paths found!</span>';
+            } else {
+                networkStatus.innerHTML = `<span class="error">✗ Found ${incorrectScripts.length} incorrect script tags and ${networkErrors.length} network errors</span>`;
+            }
+        }, 1000);
+        
+        // Run test
+        testScriptPath();
+        
+        console.log('Scripts.js path test initialized.');
+    </script>
+</body>
+</html>

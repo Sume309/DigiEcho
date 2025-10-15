@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Error Test Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>404 Error Detection Test</h1>
+    
+    <div class="test-section">
+        <h3>Test 1: Static Resources</h3>
+        <p>Check browser console for any failed resource loads:</p>
+        
+        <!-- Test common missing files -->
+        <script>
+            // Test if scripts.js loads
+            var script = document.createElement('script');
+            script.src = 'assets/js/scripts.js';
+            script.onload = function() {
+                console.log('✅ assets/js/scripts.js loaded successfully');
+            };
+            script.onerror = function() {
+                console.error('❌ 404: assets/js/scripts.js failed to load');
+            };
+            document.head.appendChild(script);
+            
+            // Test other potential missing files
+            var testFiles = [
+                'css/styles.css',
+                'js/scripts.js',
+                'images/logo.png',
+                'favicon.ico'
+            ];
+            
+            testFiles.forEach(function(file) {
+                fetch(file)
+                    .then(response => {
+                        if (response.status === 404) {
+                            console.error('❌ 404: ' + file + ' not found');
+                        } else {
+                            console.log('✅ ' + file + ' found (status: ' + response.status + ')');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('❌ Error loading ' + file + ':', error);
+                    });
+            });
+        </script>
+    </div>
+    
+    <div class="test-section">
+        <h3>Test 2: AJAX Endpoints</h3>
+        <button onclick="testAjaxEndpoints()">Test AJAX Endpoints</button>
+        <div id="ajax-results"></div>
+        
+        <script>
+            function testAjaxEndpoints() {
+                var results = document.getElementById('ajax-results');
+                results.innerHTML = '<p>Testing AJAX endpoints...</p>';
+                
+                var endpoints = [
+                    'get_discounts',
+                    'get_discount',
+                    'get_stats'
+                ];
+                
+                endpoints.forEach(function(endpoint) {
+                    fetch('discounts-management.php?action=' + endpoint)
+                        .then(response => {
+                            var status = response.status === 200 ? '✅' : '❌';
+                            var message = status + ' ' + endpoint + ': HTTP ' + response.status;
+                            
+                            if (response.status === 404) {
+                                message += ' (404 NOT FOUND)';
+                            } else if (response.status === 302) {
+                                message += ' (REDIRECT - likely auth issue)';
+                            }
+                            
+                            results.innerHTML += '<p>' + message + '</p>';
+                            console.log(message);
+                        })
+                        .catch(error => {
+                            var message = '❌ ' + endpoint + ': ' + error.message;
+                            results.innerHTML += '<p>' + message + '</p>';
+                            console.error(message);
+                        });
+                });
+            }
+        </script>
+    </div>
+    
+    <div class="test-section">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Open browser Developer Tools (F12)</li>
+            <li>Go to the Console tab</li>
+            <li>Look for any red error messages showing 404 errors</li>
+            <li>Go to the Network tab</li>
+            <li>Refresh this page and click "Test AJAX Endpoints"</li>
+            <li>Look for any red/failed requests</li>
+            <li>Check the exact URL that's failing</li>
+        </ol>
+    </div>
+</body>
+</html>

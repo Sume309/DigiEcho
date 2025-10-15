@@ -1,0 +1,125 @@
+        .footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%) !important;
+            color: #212529 !important;
+            padding: 40px 0 20px;
+            border-top: 3px solid #007bff;
+        }
+        .footer .text-muted {
+            color: #6c757d !important;
+            opacity: 1;
+        }
+        .footer p {
+            color: #495057 !important;
+        }
+        .footer a {
+            color: #007bff !important;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer a:hover {
+            color: #0056b3 !important;
+            text-decoration: underline;
+            transform: translateX(3px);
+        }
+        .footer h5 {
+            color: #212529 !important;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-shadow: none;
+        }
+        .footer h6 {
+            color: #343a40 !important;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-shadow: none;
+        }
+        .footer ul li {
+            margin-bottom: 10px;
+        }
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: #ffffff !important;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+        .social-links a:hover {
+            background: linear-gradient(135deg, #2980b9, #1abc9c);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+        .copyright {
+            border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+            padding-top: 20px;
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.5) !important;
+            border-radius: 10px 10px 0 0;
+        }
+        .copyright p {
+            color: #495057 !important;
+            opacity: 1;
+        }
+        
+        /* Enhanced footer styling for better readability */
+        .footer .fas, .footer .fab {
+            color: #007bff !important;
+            margin-right: 8px;
+        }
+        .footer .list-unstyled li {
+            padding: 3px 0;
+            transition: all 0.3s ease;
+        }
+        .footer .list-unstyled li:hover {
+            transform: translateX(5px);
+        }
+        .footer .col-lg-3 {
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        .footer .col-lg-3:last-child {
+            border-right: none;
+        }
+        @media (max-width: 992px) {
+            .footer .col-lg-3 {
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+            }
+            .footer .col-lg-3:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Additional high-priority rules for footer visibility */
+        footer.footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #dee2e6 100%) !important;
+        }
+        
+        footer.footer * {
+            color: #212529 !important;
+        }
+        
+        footer.footer .text-muted {
+            color: #6c757d !important;
+        }
+        
+        footer.footer a {
+            color: #007bff !important;
+        }
+        
+        footer.footer a:hover {
+            color: #0056b3 !important;
+        }
+        
+        /* Ensure company tagline is visible */
+        footer.footer p:contains("trusted online shopping") {
+            color: #495057 !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+        }
